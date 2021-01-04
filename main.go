@@ -72,19 +72,23 @@ func main() {
 		fmt.Println(err)
 		fmt.Printf(string(colorReset))
 	}
+
 	var addr = flag.String("addr", "<ALL>", "IP address")
 	var port = flag.String("port", "69", "UDP port for the tftp server")
 	var dir = flag.String("dir", tempDir, "The Directory to service with the TFTP Server")
 	flag.Parse()
-	fmt.Printf("%sBinding to IP:%s%s\n", string(colorWhite), string(colorGreen), *addr)
-	fmt.Printf("%sPort:%sUDP/%s\n", string(colorWhite), string(colorGreen), *port)
-	fmt.Printf("%sDirectory:%s%s\n", string(colorWhite), string(colorGreen), *dir)
+
+	fmt.Print("\n\ntftp-server is using the following options\n\n")
+	fmt.Printf("%s-addr=%s%s\n", string(colorWhite), string(colorGreen), *addr)
+	fmt.Printf("%s-port=%sUDP/%s\n", string(colorWhite), string(colorGreen), *port)
+	fmt.Printf("%s-dir=%s%s\n", string(colorWhite), string(colorGreen), *dir)
 	checkpath(*dir)
 	storagePath = *dir
 	fmt.Printf(string(colorReset))
 	s := tftp.NewServer(readHandler, writeHandler)
 	s.SetTimeout(5 * time.Second)
 	// break up the input ip and port and add it to the listen and serve method
+	fmt.Println("tftp-server is " + string(colorGreen) + "running" + string(colorReset))
 	if *addr == "<ALL>" {
 		err = s.ListenAndServe(":69")
 	} else {
